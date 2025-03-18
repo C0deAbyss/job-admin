@@ -64,31 +64,31 @@ export const useUserStore = defineStore({
     // 登录
     async login(params: any) {
       const response = await login(params);
-      const { result, code } = response;
+      const { data, code } = response;
       if (code === ResultEnum.SUCCESS) {
         const ex = 7 * 24 * 60 * 60;
-        storage.set(ACCESS_TOKEN, result.token, ex);
-        storage.set(CURRENT_USER, result, ex);
+        storage.set(ACCESS_TOKEN, data.token, ex);
+        storage.set(CURRENT_USER, data, ex);
         storage.set(IS_SCREENLOCKED, false);
-        this.setToken(result.token);
-        this.setUserInfo(result);
+        this.setToken(data.token);
+        this.setUserInfo(data);
       }
       return response;
     },
 
     // 获取用户信息
     async getInfo() {
-      const data = await getUserInfoApi();
-      const { result } = data;
-      if (result.permissions && result.permissions.length) {
-        const permissionsList = result.permissions;
+      const resp = await getUserInfoApi();
+      const { data } = resp;
+      if (data.permissions && data.permissions.length) {
+        const permissionsList = data.permissions;
         this.setPermissions(permissionsList);
-        this.setUserInfo(result);
+        this.setUserInfo(data);
       } else {
         throw new Error('getInfo: permissionsList must be a non-null array !');
       }
-      this.setAvatar(result.avatar);
-      return result;
+      this.setAvatar(data.avatar);
+      return data;
     },
 
     // 登出

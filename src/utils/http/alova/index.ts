@@ -1,9 +1,7 @@
 import { createAlova } from 'alova';
 import VueHook from 'alova/vue';
 import adapterFetch from 'alova/fetch';
-import { createAlovaMockAdapter } from '@alova/mock';
 import { isString } from 'lodash-es';
-import mocks from './mocks';
 import { useUser } from '@/store/modules/user';
 import { storage } from '@/utils/Storage';
 import { useGlobSetting } from '@/hooks/setting';
@@ -11,28 +9,7 @@ import { PageEnum } from '@/enums/pageEnum';
 import { ResultEnum } from '@/enums/httpEnum';
 import { isUrl } from '@/utils';
 
-const { useMock, apiUrl, urlPrefix, loggerMock } = useGlobSetting();
-
-const mockAdapter = createAlovaMockAdapter([...mocks], {
-  // 全局控制是否启用mock接口，默认为true
-  enable: useMock,
-
-  // 非模拟请求适配器，用于未匹配mock接口时发送请求
-  httpAdapter: adapterFetch(),
-
-  // mock接口响应延迟，单位毫秒
-  delay: 1000,
-
-  // 自定义打印mock接口请求信息
-  // mockRequestLogger: (res) => {
-  //   loggerMock && console.log(`Mock Request ${res.url}`, res);
-  // },
-  mockRequestLogger: loggerMock,
-  onMockError(error, currentMethod) {
-    console.error('🚀 ~ onMockError ~ currentMethod:', currentMethod);
-    console.error('🚀 ~ onMockError ~ error:', error);
-  },
-});
+const { apiUrl, urlPrefix } = useGlobSetting();
 
 export const Alova = createAlova({
   baseURL: apiUrl,
@@ -53,7 +30,7 @@ export const Alova = createAlova({
   // },
   // 在开发环境开启缓存命中日志
   cacheLogger: process.env.NODE_ENV === 'development',
-  requestAdapter: mockAdapter,
+  requestAdapter: adapterFetch(),
   beforeRequest(method) {
     const userStore = useUser();
     const token = userStore.getToken;
@@ -65,8 +42,7 @@ export const Alova = createAlova({
     const isUrlStr = isUrl(method.url as string);
     if (!isUrlStr && urlPrefix) {
       method.url = `${urlPrefix}${method.url}`;
-    }
-    if (!isUrlStr && apiUrl && isString(apiUrl)) {
+    } else if (!isUrlStr && apiUrl && isString(apiUrl)) {
       method.url = `${apiUrl}${method.url}`;
     }
   },
