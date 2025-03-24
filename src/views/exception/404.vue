@@ -5,7 +5,7 @@
     </div>
     <div class="text-center">
       <h1 class="text-base text-gray-500">抱歉，你访问的页面不存在</h1>
-      <n-button type="info" @click="goHome">回到首页</n-button>
+      <n-button type="info" @click="goBack">回到上一页</n-button>
     </div>
   </div>
 </template>
@@ -13,8 +13,8 @@
 <script lang="ts" setup>
   import { useRouter } from 'vue-router';
   const router = useRouter();
-  function goHome() {
-    router.push('/');
+  function goBack() {
+    router.back();
   }
 </script>
 

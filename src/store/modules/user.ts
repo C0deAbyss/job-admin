@@ -7,8 +7,9 @@ import { getUserInfo as getUserInfoApi, login } from '@/api/system/user';
 import { storage } from '@/utils/Storage';
 
 export type UserInfoType = {
-  // TODO: add your own data
   username: string;
+  avatar: string;
+  realName: string;
   email: string;
 };
 
@@ -94,7 +95,7 @@ export const useUserStore = defineStore({
     // 登出
     async logout() {
       this.setPermissions([]);
-      this.setUserInfo({ username: '', email: '' });
+      this.setUserInfo({ username: '', realName: '', avatar: '', email: '' });
       storage.remove(ACCESS_TOKEN);
       storage.remove(CURRENT_USER);
     },

@@ -1,29 +1,19 @@
 import { h } from 'vue';
 import { NAvatar, NTag } from 'naive-ui';
 import { BasicColumn } from '@/components/Table';
+
 export interface ListData {
   id: number;
   name: string;
   gender: number;
   avatar: string;
   email: string;
-  city: string;
-  status: string;
-  type: string;
-  createDate: string;
+  eduBackground: string;
+  role: number;
+  phone: string;
 }
 
-const sexMap = {
-  male: '男',
-  female: '女',
-  unknown: '未知',
-};
-
-const statusMap = {
-  close: '已取消',
-  refuse: '已拒绝',
-  pass: '已通过',
-};
+const sexMap = ['女', '男', '未知'];
 
 export const columns: BasicColumn<ListData>[] = [
   {
@@ -31,8 +21,8 @@ export const columns: BasicColumn<ListData>[] = [
     key: 'id',
   },
   {
-    title: '名称',
-    key: 'name',
+    title: '姓名',
+    key: 'nickname',
   },
   {
     title: '头像',
@@ -46,7 +36,7 @@ export const columns: BasicColumn<ListData>[] = [
   },
   {
     title: '性别',
-    key: 'sex',
+    key: 'gender',
     render(record) {
       return h(
         NTag,
@@ -65,31 +55,37 @@ export const columns: BasicColumn<ListData>[] = [
     width: 220,
   },
   {
-    title: '城市',
-    key: 'city',
+    title: '手机号',
+    key: 'phone',
+    width: 220,
   },
   {
-    title: '状态',
-    key: 'status',
-    render(record) {
-      return h(
-        NTag,
-        {
-          type:
-            record.status === 'close'
-              ? 'default'
-              : record.status === 'refuse'
-              ? 'error'
-              : 'success',
-        },
-        {
-          default: () => statusMap[record.status],
-        }
-      );
-    },
+    title: '教育背景',
+    key: 'eduBackground',
+    width: 180,
   },
-  {
-    title: '创建时间',
-    key: 'createDate',
-  },
+  // {
+  //   title: '状态',
+  //   key: 'status',
+  //   render(record) {
+  //     return h(
+  //       NTag,
+  //       {
+  //         type:
+  //           record.status === 'close'
+  //             ? 'default'
+  //             : record.status === 'refuse'
+  //             ? 'error'
+  //             : 'success',
+  //       },
+  //       {
+  //         default: () => statusMap[record.status],
+  //       }
+  //     );
+  //   },
+  // },
+  // {
+  //   title: '创建时间',
+  //   key: 'createDate',
+  // },
 ];

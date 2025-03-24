@@ -55,7 +55,7 @@ export const Alova = createAlova({
         return res;
       }
       // 请根据自身情况修改数据结构
-      const { message, code, result } = res;
+      const { msg, code, data } = res;
 
       // 不进行任何处理，直接返回
       // 用于需要直接获取 code、result、 message 这些信息时开启
@@ -70,7 +70,7 @@ export const Alova = createAlova({
 
       const LoginPath = PageEnum.BASE_LOGIN;
       if (ResultEnum.SUCCESS === code) {
-        return result;
+        return data;
       }
       // 需要登录
       if (code === 912) {
@@ -87,8 +87,8 @@ export const Alova = createAlova({
         });
       } else {
         // 可按需处理错误 一般情况下不是 912 错误，不一定需要弹出 message
-        Message?.error(message);
-        throw new Error(message);
+        Message?.error(msg);
+        throw new Error(msg);
       }
     },
   },

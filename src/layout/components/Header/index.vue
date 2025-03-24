@@ -101,13 +101,13 @@
       <div class="layout-header-trigger layout-header-trigger-min">
         <n-dropdown trigger="hover" @select="avatarSelect" :options="avatarOptions">
           <div class="avatar">
-            <n-avatar :src="websiteConfig.logo">
+            <n-avatar :src="avatar">
               <template #icon>
                 <UserOutlined />
               </template>
             </n-avatar>
             <n-divider vertical />
-            <span>{{ username }}</span>
+            <span>{{ realName }}</span>
           </div>
         </n-dropdown>
       </div>
@@ -163,7 +163,8 @@
       const drawerSetting = ref();
 
       const state = reactive({
-        username: userStore?.info?.username ?? '',
+        realName: userStore?.info?.realName ?? '',
+        avatar: userStore?.info?.avatar ?? websiteConfig.logo,
         fullscreenIcon: 'FullscreenOutlined',
         navMode,
         navTheme,
