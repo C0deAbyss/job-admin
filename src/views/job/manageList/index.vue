@@ -28,7 +28,7 @@
         </n-button>
       </template>
 
-      <template #toolbar></template>
+      <template #toolbar> </template>
     </BasicTable>
 
     <n-modal v-model:show="showModal" :show-icon="false" preset="dialog" title="新建">
@@ -69,7 +69,7 @@
   import { PlusOutlined } from '@vicons/antd';
   import { useRouter } from 'vue-router';
   import { type FormRules } from 'naive-ui';
-  import { getEmployeeList } from '@/api/employee/manage';
+  import { getJobList } from '@/api/job/job';
 
   const rules: FormRules = {
     name: {
@@ -93,29 +93,28 @@
   const schemas: FormSchema[] = [
     {
       field: 'name',
-      labelMessage: '这是一个提示',
       component: 'NInput',
-      label: '姓名',
+      label: '职位名',
       componentProps: {
-        placeholder: '请输入姓名',
+        placeholder: '请输入职位名',
         onInput: (e: any) => {
           console.log(e);
         },
       },
-      rules: [{ required: true, message: '请输入姓名', trigger: ['blur'] }],
+      rules: [{ required: true, message: '请输入职位名', trigger: ['blur'] }],
     },
-    {
-      field: 'mobile',
-      component: 'NInputNumber',
-      label: '手机',
-      componentProps: {
-        placeholder: '请输入手机号码',
-        showButton: false,
-        onInput: (e: any) => {
-          console.log(e);
-        },
-      },
-    },
+    // {
+    //   field: 'mobile',
+    //   component: 'NInputNumber',
+    //   label: '手机',
+    //   componentProps: {
+    //     placeholder: '请输入手机号码',
+    //     showButton: false,
+    //     onInput: (e: any) => {
+    //       console.log(e);
+    //     },
+    //   },
+    // },
     // {
     //   field: 'type',
     //   component: 'NSelect',
@@ -227,7 +226,7 @@
   });
 
   const actionColumn = reactive({
-    width: 160,
+    width: 220,
     title: '操作',
     key: 'action',
     fixed: 'right',
@@ -243,7 +242,7 @@
               return true;
             },
             // 根据权限控制是否显示: 有权限，会显示，支持多个
-            auth: ['employee_manage'],
+            auth: ['job_manage'],
           },
           {
             label: '编辑',
@@ -251,7 +250,7 @@
             ifShow: () => {
               return true;
             },
-            auth: ['employee_manage'],
+            auth: ['job_manage'],
           },
         ],
         // dropDownActions: [
@@ -285,11 +284,12 @@
   });
 
   function addTable() {
-    showModal.value = true;
+    // showModal.value = true;
+    router.push({ name: 'job_form', params: { id: 0 } });
   }
 
   const loadDataTable = async (res) => {
-    const { data } = await getEmployeeList({ ...getFieldsValue(), ...res });
+    const { data } = await getJobList({ ...getFieldsValue(), ...res });
     return data;
   };
 
@@ -320,14 +320,12 @@
 
   function handleEdit(record: Recordable) {
     console.log('点击了编辑', record);
-    // router.push({ name: 'basic-info', params: { id: record.id } });
-    router.push({ name: 'exception-403' });
+    router.push({ name: 'job_form', params: { id: record.id } });
   }
 
   function handleDelete(record: Recordable) {
     console.log('点击了删除', record);
     window['$message'].info('点击了删除');
-    router.push({ name: 'exception-404' });
   }
 
   function handleSubmit(values: Recordable) {
