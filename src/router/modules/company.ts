@@ -1,26 +1,46 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { GoldOutlined } from '@vicons/antd';
-import { renderIcon } from '@/utils';
+import { DashboardOutlined } from '@vicons/antd';
+import { renderIcon } from '@/utils/index';
 
-const routeName = 'job';
+const routeName = 'company';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/job',
+    path: '/company',
     name: routeName,
-    redirect: '/job/console',
+    redirect: '/company/manage',
     component: Layout,
     meta: {
-      title: 'job',
-      icon: renderIcon(GoldOutlined),
-      permissions: ['job_manage', 'job_manage'],
+      title: '公司',
+      icon: renderIcon(DashboardOutlined),
+      permissions: ['dashboard_console', 'dashboard_console', 'dashboard_workplace'],
       sort: 0,
     },
     children: [
       {
+        path: 'console',
+        name: `${routeName}_console`,
+        meta: {
+          title: '公司信息',
+          permissions: ['dashboard_console'],
+          affix: true,
+        },
+        component: () => import('@/views/dashboard/console/console.vue'),
+      },
+      {
+        path: 'company',
+        name: `${routeName}_employee_manage`,
+        meta: {
+          title: '员工管理',
+          permissions: ['employee_manage'],
+          affix: true,
+        },
+        component: () => import('@/views/employee/manageList/index.vue'),
+      },
+      {
         path: 'manage',
-        name: `${routeName}_manage`,
+        name: `${routeName}_job_manage`,
         meta: {
           title: '职位管理',
           permissions: ['job_manage'],
