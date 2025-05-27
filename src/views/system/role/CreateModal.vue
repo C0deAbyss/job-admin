@@ -18,7 +18,7 @@
       componentProps: {
         placeholder: '请输入角色名称',
       },
-      rules: [{ required: true, message: '请输入角色名称', trigger: ['blur'] }],
+      rules: [{ required: true, message: '请输入角色名称', trigger: ['blur-sm'] }],
     },
     {
       field: 'explain',

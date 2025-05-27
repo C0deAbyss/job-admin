@@ -29,6 +29,15 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/dashboard/console/console.vue'),
       },
       {
+        path: 'edit',
+        name: `${routeName}_edit`,
+        meta: {
+          title: '创建公司',
+          hidden: true,
+        },
+        component: () => import('@/views/dashboard/edit/edit.vue'),
+      },
+      {
         path: 'company',
         name: `${routeName}_employee_manage`,
         meta: {
@@ -50,7 +59,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'form/:id?',
-        name: `${routeName}_form`,
+        name: `job_form`,
         meta: {
           title: '职位编辑',
           permissions: ['job_manage'],

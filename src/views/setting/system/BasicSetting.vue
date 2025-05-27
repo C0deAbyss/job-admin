@@ -61,7 +61,7 @@
     name: {
       required: true,
       message: '请输入网站名称',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     mobile: {
       required: true,

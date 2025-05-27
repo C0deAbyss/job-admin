@@ -1,363 +1,275 @@
 <template>
-  <div class="console">
-    <!--数据卡片-->
-    <n-grid cols="1 s:2 m:3 l:4 xl:4 2xl:4" responsive="screen" :x-gap="12" :y-gap="8">
-      <n-grid-item>
-        <NCard
-          title="访问量"
-          :segmented="{ content: true, footer: true }"
-          size="small"
-          :bordered="false"
-        >
-          <template #header-extra>
-            <n-tag type="success">日</n-tag>
-          </template>
-          <div class="flex justify-between px-1 py-1">
-            <n-skeleton v-if="loading" :width="100" size="medium" />
-            <CountTo v-else :startVal="1" :endVal="visits.dayVisits" class="text-3xl" />
+  <div class="console bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8" v-if="companyInfo">
+      <!-- Header -->
+      <header class="mb-8">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-800">公司信息</h1>
+            <p class="text-gray-600">公司详细信息介绍</p>
           </div>
-          <div class="flex justify-between px-1 py-1">
-            <div class="text-sn">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                日同比
-                <CountTo :startVal="1" suffix="%" :endVal="visits.rise" />
-                <n-icon size="12" color="#00ff6f">
-                  <CaretUpOutlined />
-                </n-icon>
-              </template>
-            </div>
-            <div class="text-sn">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                周同比
-                <CountTo :startVal="1" suffix="%" :endVal="visits.decline" />
-                <n-icon size="12" color="#ffde66">
-                  <CaretDownOutlined />
-                </n-icon>
-              </template>
-            </div>
-          </div>
-          <template #footer>
-            <div class="flex justify-between">
-              <n-skeleton v-if="loading" text :repeat="2" />
-              <template v-else>
-                <div class="text-sn"> 总访问量： </div>
-                <div class="text-sn">
-                  <CountTo :startVal="1" :endVal="visits.amount" />
-                </div>
-              </template>
-            </div>
-          </template>
-        </NCard>
-      </n-grid-item>
-      <n-grid-item>
-        <NCard
-          title="销售额"
-          :segmented="{ content: true, footer: true }"
-          size="small"
-          :bordered="false"
-        >
-          <template #header-extra>
-            <n-tag type="info">周</n-tag>
-          </template>
-          <div class="flex justify-between px-1 py-1">
-            <n-skeleton v-if="loading" :width="100" size="medium" />
-            <CountTo
-              v-else
-              prefix="￥"
-              :startVal="1"
-              :endVal="saleroom.weekSaleroom"
-              class="text-3xl"
-            />
-          </div>
-          <div class="flex justify-between px-2 py-2">
-            <div class="flex-1 text-sn">
-              <n-progress
-                type="line"
-                :percentage="saleroom.degree"
-                :indicator-placement="'inside'"
-                processing
-              />
-            </div>
-          </div>
-          <template #footer>
-            <div class="flex justify-between">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                <div class="text-sn"> 总销售额： </div>
-                <div class="text-sn">
-                  <CountTo prefix="￥" :startVal="1" :endVal="saleroom.amount" />
-                </div>
-              </template>
-            </div>
-          </template>
-        </NCard>
-      </n-grid-item>
-      <n-grid-item>
-        <NCard
-          title="订单量"
-          :segmented="{ content: true, footer: true }"
-          size="small"
-          :bordered="false"
-        >
-          <template #header-extra>
-            <n-tag type="warning">周</n-tag>
-          </template>
-          <div class="flex justify-between px-1 py-1">
-            <n-skeleton v-if="loading" :width="100" size="medium" />
-            <CountTo v-else :startVal="1" :endVal="orderLarge.weekLarge" class="text-3xl" />
-          </div>
-          <div class="flex justify-between px-1 py-1">
-            <div class="text-sn">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                日同比
-                <CountTo :startVal="1" suffix="%" :endVal="orderLarge.rise" />
-                <n-icon size="12" color="#00ff6f">
-                  <CaretUpOutlined />
-                </n-icon>
-              </template>
-            </div>
-            <div class="text-sn">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                周同比
-                <CountTo :startVal="1" suffix="%" :endVal="orderLarge.rise" />
-                <n-icon size="12" color="#ffde66">
-                  <CaretDownOutlined />
-                </n-icon>
-              </template>
-            </div>
-          </div>
-          <template #footer>
-            <div class="flex justify-between">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                <div class="text-sn"> 转化率： </div>
-                <div class="text-sn">
-                  <CountTo :startVal="1" suffix="%" :endVal="orderLarge.amount" />
-                </div>
-              </template>
-            </div>
-          </template>
-        </NCard>
-      </n-grid-item>
-      <n-grid-item>
-        <NCard
-          title="成交额"
-          :segmented="{ content: true, footer: true }"
-          size="small"
-          :bordered="false"
-        >
-          <template #header-extra>
-            <n-tag type="error">月</n-tag>
-          </template>
-          <div class="flex justify-between px-1 py-1">
-            <n-skeleton v-if="loading" :width="100" size="medium" />
-            <CountTo v-else prefix="￥" :startVal="1" :endVal="volume.weekLarge" class="text-3xl" />
-          </div>
-          <div class="flex justify-between px-1 py-1">
-            <div class="text-sn">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                月同比
-                <CountTo :startVal="1" suffix="%" :endVal="volume.rise" />
-                <n-icon size="12" color="#00ff6f">
-                  <CaretUpOutlined />
-                </n-icon>
-              </template>
-            </div>
-            <div class="text-sn">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                月同比
-                <CountTo :startVal="1" suffix="%" :endVal="volume.decline" />
-                <n-icon size="12" color="#ffde66">
-                  <CaretDownOutlined />
-                </n-icon>
-              </template>
-            </div>
-          </div>
-          <template #footer>
-            <div class="flex justify-between">
-              <n-skeleton v-if="loading" :width="100" size="medium" />
-              <template v-else>
-                <div class="text-sn"> 总成交额： </div>
-                <div class="text-sn">
-                  <CountTo prefix="￥" :startVal="1" :endVal="volume.amount" />
-                </div>
-              </template>
-            </div>
-          </template>
-        </NCard>
-      </n-grid-item>
-    </n-grid>
+        </div>
+      </header>
 
-    <!--导航卡片-->
-    <div class="mt-4">
-      <n-grid cols="1 s:2 m:3 l:8 xl:8 2xl:8" responsive="screen" :x-gap="16" :y-gap="8">
-        <n-grid-item v-for="(item, index) in iconList" :key="index">
-          <NCard content-style="padding-top: 0;" size="small" :bordered="false">
-            <template #footer>
-              <n-skeleton v-if="loading" size="medium" />
-              <div class="cursor-pointer" v-else>
-                <p class="flex justify-center">
-                  <span>
-                    <n-icon :size="item.size" class="flex-1" :color="item.color">
-                      <component :is="item.icon" v-on="item.eventObject || {}" />
-                    </n-icon>
-                  </span>
-                </p>
-                <p class="flex justify-center"
-                  ><span>{{ item.title }}</span></p
+      <main>
+        <div class="company-card bg-white rounded-xl shadow-md overflow-hidden mb-8">
+          <div class="md:flex">
+            <!-- Company Logo/Image -->
+            <div class="md:w-1/4 bg-blue-50 flex items-center justify-center p-8">
+              <div class="w-32 h-32 rounded-full bg-blue-100 flex items-center justify-center">
+                <i class="fas fa-building text-blue-500 text-5xl"></i>
+              </div>
+            </div>
+
+            <!-- Company Details -->
+            <div class="md:w-3/4 p-8">
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <h2 class="text-2xl font-bold text-gray-800">{{ companyInfo.name }}</h2>
+                  <p class="text-gray-600">{{ companyInfo.industry }}</p>
+                </div>
+                <span class="status-active px-3 py-1 rounded-full text-sm font-semibold">
+                  <i class="fas fa-circle-check mr-1"></i>
+                  {{ companyInfo.status == 1 ? '在营' : '其他' }}
+                </span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500 mb-1">成立时间</h3>
+                  <p class="text-gray-800">{{ companyInfo.buildTime?.split(' ')[0] }}</p>
+                </div>
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500 mb-1">员工数</h3>
+                  <p class="text-gray-800">{{ companyInfo.scale }}</p>
+                </div>
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500 mb-1">地址</h3>
+                  <p class="text-gray-800">{{ companyInfo.address }}</p>
+                </div>
+                <div>
+                  <h3 class="text-sm font-medium text-gray-500 mb-1">注册资金</h3>
+                  <p class="text-gray-800">{{ shiftDecimalLeft(companyInfo.register) }}万</p>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium"
+                  >Intelligence</span
+                >
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium"
+                  >Awesome</span
+                >
+                <span
+                  class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium"
+                  >Fantastic</span
                 >
               </div>
-            </template>
-          </NCard>
-        </n-grid-item>
-      </n-grid>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-b border-gray-200 mb-6">
+          <nav class="-mb-px flex space-x-8">
+            <button
+              v-for="(item, index) in btns"
+              :key="index"
+              :class="
+                index == activeTabIndex
+                  ? 'tab-button active border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+                  : 'tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+              "
+              @click="onTabClick(index)"
+            >
+              {{ item }}
+            </button>
+          </nav>
+        </div>
+
+        <div id="overviewContent" class="tab-content active" v-if="activeTabIndex == 0">
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+            <div class="p-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">公司介绍</h3>
+              <p class="text-gray-700 mb-6">
+                {{ companyInfo.description }}
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900 mb-4">关键信息</h3>
+                  <div class="space-y-3">
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                      <span class="text-gray-600">法人代表</span>
+                      <span class="text-gray-800 font-medium">{{
+                        companyInfo.legalRepresentative
+                      }}</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                      <span class="text-gray-600">运营行业</span>
+                      <span class="text-gray-800 font-medium">{{ companyInfo.industry }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="institutionsContent" class="tab-content active" v-if="activeTabIndex == 1">
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+            <div class="p-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900 mb-4">工作制度</h3>
+                  <div class="space-y-3">
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                      <span class="text-gray-600">休息制度</span>
+                      <span class="text-gray-800 font-medium">{{ companyInfo.rest }}</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                      <span class="text-gray-600">加班制度</span>
+                      <span class="text-gray-800 font-medium">{{ companyInfo.workOvertime }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900 mb-4">工作时间</h3>
+                  <div class="space-y-3">
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                      <span class="text-gray-600">上班时间</span>
+                      <span class="text-gray-800 font-medium">{{
+                        timestampToTime(companyInfo.workStart)
+                      }}</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-100 pb-2">
+                      <span class="text-gray-600">下班时间</span>
+                      <span class="text-gray-800 font-medium">{{
+                        timestampToTime(companyInfo.workEnd)
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
-    <!--访问量 | 流量趋势-->
-    <VisiTab />
+    <div class="container mx-auto px-4 py-8 max-w-4xl" v-if="!companyInfo">
+      <header class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">公司信息</h1>
+        <p class="text-gray-600">您的公司信息将展示在此处，看起来您似乎还没有创建公司</p>
+      </header>
+
+      <!-- Empty Company Card -->
+      <div
+        class="bg-white rounded-xl shadow-md overflow-hidden mb-8 border-2 border-dashed border-gray-300"
+      >
+        <div class="p-8 text-center">
+          <div
+            class="w-20 h-20 mx-auto rounded-full bg-gray-200 flex items-center justify-center mb-4"
+          >
+            <i class="fas fa-building text-gray-400 text-3xl"></i>
+          </div>
+          <h3 class="text-xl font-medium text-gray-700 mb-2">暂无公司数据</h3>
+          <p class="text-gray-500 mb-4">创建您的公司以展示在此处</p>
+          <button
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+            @click="createCompanyClick()"
+          >
+            <i class="fas fa-plus mr-2"></i>创建公司
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
-  import { getConsoleInfo } from '@/api/dashboard/console';
-  import VisiTab from './components/VisiTab.vue';
-  import { CountTo } from '@/components/CountTo/index';
-  import {
-    CaretUpOutlined,
-    CaretDownOutlined,
-    UsergroupAddOutlined,
-    BarChartOutlined,
-    ShoppingCartOutlined,
-    AccountBookOutlined,
-    CreditCardOutlined,
-    MailOutlined,
-    TagsOutlined,
-    SettingOutlined,
-  } from '@vicons/antd';
+  import { onMounted, ref } from 'vue';
+  import { CompanyInfo, getCompanyInfo } from '@/api/company/dash';
+  import router from '@/router';
 
-  interface InVisits {
-    dayVisits: number;
-    rise: number;
-    decline: number;
-    amount: number;
-  }
+  const activeTabIndex = ref(0);
+  const companyInfo = ref({} as CompanyInfo);
 
-  interface InSaleroom {
-    weekSaleroom: number;
-    amount: number;
-    degree: number;
-  }
+  const btns = ['公司概述', '公司制度'];
 
-  interface InOrderLarge {
-    weekLarge: number;
-    rise: number;
-    decline: number;
-    amount: number;
-  }
-
-  interface InVolume {
-    weekLarge: number;
-    rise: number;
-    decline: number;
-    amount: number;
-  }
-
-  const loading = ref(true);
-  const visits = ref({} as InVisits);
-  const saleroom = ref({} as InSaleroom);
-  const orderLarge = ref({} as InOrderLarge);
-  const volume = ref({} as InVolume);
-
-  // 图标列表
-  const iconList = [
-    {
-      icon: UsergroupAddOutlined,
-      size: '32',
-      title: '用户',
-      color: '#69c0ff',
-      eventObject: {
-        click: () => {},
-      },
-    },
-    {
-      icon: BarChartOutlined,
-      size: '32',
-      title: '分析',
-      color: '#69c0ff',
-      eventObject: {
-        click: () => {},
-      },
-    },
-    {
-      icon: ShoppingCartOutlined,
-      size: '32',
-      title: '商品',
-      color: '#ff9c6e',
-      eventObject: {
-        click: () => {},
-      },
-    },
-    {
-      icon: AccountBookOutlined,
-      size: '32',
-      title: '订单',
-      color: '#b37feb',
-      eventObject: {
-        click: () => {},
-      },
-    },
-    {
-      icon: CreditCardOutlined,
-      size: '32',
-      title: '票据',
-      color: '#ffd666',
-      eventObject: {
-        click: () => {},
-      },
-    },
-    {
-      icon: MailOutlined,
-      size: '32',
-      title: '消息',
-      color: '#5cdbd3',
-      eventObject: {
-        click: () => {},
-      },
-    },
-    {
-      icon: TagsOutlined,
-      size: '32',
-      title: '标签',
-      color: '#ff85c0',
-      eventObject: {
-        click: () => {},
-      },
-    },
-    {
-      icon: SettingOutlined,
-      size: '32',
-      title: '配置',
-      color: '#ffc069',
-      eventObject: {
-        click: () => {},
-      },
-    },
-  ];
+  const onTabClick = (index: number) => {
+    activeTabIndex.value = index;
+  };
 
   onMounted(async () => {
-    const data = await getConsoleInfo();
-    visits.value = data.visits;
-    saleroom.value = data.saleroom;
-    orderLarge.value = data.orderLarge;
-    volume.value = data.volume;
-    loading.value = false;
+    const data = await getCompanyInfo();
+    companyInfo.value = data;
+    console.log(data);
   });
+
+  const createCompanyClick = () => {
+    router.push({
+      path: '/redirect/company/edit',
+    });
+  };
+
+  const shiftDecimalLeft = (inputNumber: number): number => {
+    if (isNaN(inputNumber) || !isFinite(inputNumber)) {
+      return 0;
+    }
+    const shiftedNumber = inputNumber / 10000;
+    return parseFloat(shiftedNumber.toFixed(1));
+  };
+
+  const timestampToTime = (timestamp: number): string => {
+    if (timestamp < 1e12) {
+      timestamp *= 1000;
+    }
+    // 处理非数字输入
+    if (typeof timestamp !== 'number' || isNaN(timestamp)) {
+      throw new Error('输入必须是有效的数字时间戳');
+    }
+
+    // 创建日期对象
+    const date = new Date(timestamp);
+
+    // 获取小时和分钟
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // 确保分钟为两位数（如果需要）
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    // 返回格式化的时间字符串
+    return `${hours}:${formattedMinutes}`;
+  };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .company-card {
+    transition: all 0.3s ease;
+  }
+
+  .company-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .status-active {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+
+  .status-inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+
+  .status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .tab-button {
+    cursor: pointer;
+  }
+</style>

@@ -19,7 +19,7 @@
             class="py-8"
           >
             <n-form-item label="职位名" path="name">
-              <n-input v-model:value="formValue.name" placeholder="输入姓名" />
+              <n-input v-model:value="formValue.name" placeholder="输入职位名" />
             </n-form-item>
             <n-form-item label="工作地址" path="mobile">
               <n-input placeholder="工作地址" v-model:value="formValue.workAddress" />
@@ -33,14 +33,17 @@
             <n-form-item label="详细" path="mobile">
               <n-input type="textarea" placeholder="详细" v-model:value="formValue.detail" />
             </n-form-item>
-            <n-form-item label="薪资" path="mobile">
+            <n-form-item label="最低薪资" path="mobile">
               <n-input-number v-model:value="formValue.salaryStart">
                 <template #prefix> 最低</template>
               </n-input-number>
+            </n-form-item>
+            <n-form-item label="最高薪资" path="mobile">
               <n-input-number v-model:value="formValue.salaryEnd">
                 <template #prefix> 最高</template>
               </n-input-number>
             </n-form-item>
+
             <div style="margin-left: 80px">
               <n-space>
                 <n-button type="primary" @click="formSubmit">提交</n-button>
@@ -64,27 +67,27 @@
     name: {
       required: true,
       message: '请输入职位名',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     workAddress: {
       required: true,
       message: '请输入工作地址',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     workExperience: {
       required: true,
       message: '请输入工作经验',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     eduBackground: {
       required: true,
       message: '请输入学历',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     detail: {
       required: true,
       message: '请输入工作详细',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
   };
 

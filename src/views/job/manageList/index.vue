@@ -62,30 +62,31 @@
 </template>
 
 <script lang="ts" setup>
-  import { h, reactive, ref } from 'vue';
+  import { h, onMounted, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { BasicForm, FormSchema, useForm } from '@/components/Form/index';
   import { columns, ListData } from './columns';
   import { PlusOutlined } from '@vicons/antd';
   import { useRouter } from 'vue-router';
-  import { type FormRules } from 'naive-ui';
+  import { type FormRules, useMessage } from 'naive-ui';
   import { getJobList } from '@/api/job/job';
+  import { useUserStore } from '@/store/modules/user';
 
   const rules: FormRules = {
     name: {
       required: true,
-      trigger: ['blur', 'input'],
+      trigger: ['blur-sm', 'input'],
       message: '请输入名称',
     },
     address: {
       required: true,
-      trigger: ['blur', 'input'],
+      trigger: ['blur-sm', 'input'],
       message: '请输入地址',
     },
     date: {
       type: 'number',
       required: true,
-      trigger: ['blur', 'change'],
+      trigger: ['blur-sm', 'change'],
       message: '请选择日期',
     },
   };
@@ -101,7 +102,7 @@
           console.log(e);
         },
       },
-      rules: [{ required: true, message: '请输入职位名', trigger: ['blur'] }],
+      rules: [{ required: true, message: '请输入职位名', trigger: ['blur-sm'] }],
     },
     // {
     //   field: 'mobile',
@@ -336,6 +337,16 @@
   function handleReset(values: Recordable) {
     console.log(values);
   }
+
+  const userStore = useUserStore();
+  const message = useMessage();
+  onMounted(() => {
+    const token = userStore.token;
+    if (token.split('.')[2] == '0') {
+      message.error('暂无公司信息，请先创建');
+      router.push({ name: 'company_console' });
+    }
+  });
 </script>
 
 <style lang="less" scoped></style>

@@ -47,7 +47,7 @@
     password: {
       required: true,
       message: '请输入支付密码',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
   };
 

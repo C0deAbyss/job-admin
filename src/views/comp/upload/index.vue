@@ -59,12 +59,12 @@
     name: {
       required: true,
       message: '请输入预约姓名',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     remark: {
       required: true,
       message: '请输入预约备注',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     images: {
       required: true,

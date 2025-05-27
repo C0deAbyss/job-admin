@@ -44,7 +44,7 @@
     originator: {
       required: true,
       message: '请输入发件人邮箱',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
   };
 

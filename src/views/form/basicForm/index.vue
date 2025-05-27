@@ -123,12 +123,12 @@
     name: {
       required: true,
       message: '请输入预约姓名',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     remark: {
       required: true,
       message: '请输入预约备注',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     mobile: {
       required: true,
@@ -139,7 +139,7 @@
       required: true,
       type: 'number',
       message: '请选择预约时间',
-      trigger: ['blur', 'change'],
+      trigger: ['blur-sm', 'change'],
     },
     doctor: {
       required: true,

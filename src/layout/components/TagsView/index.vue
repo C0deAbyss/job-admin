@@ -538,8 +538,8 @@
 
       .tabs-card {
         -webkit-box-flex: 1;
-        flex-grow: 1;
-        flex-shrink: 1;
+        grow: 1;
+        shrink: 1;
         overflow: hidden;
         position: relative;
 

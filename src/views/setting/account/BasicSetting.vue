@@ -36,12 +36,12 @@
     name: {
       required: true,
       message: '请输入昵称',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     email: {
       required: true,
       message: '请输入邮箱',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     mobile: {
       required: true,

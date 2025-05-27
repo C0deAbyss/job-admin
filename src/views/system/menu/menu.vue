@@ -138,12 +138,12 @@
     label: {
       required: true,
       message: '请输入标题',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     path: {
       required: true,
       message: '请输入路径',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
   };
 

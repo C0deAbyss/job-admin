@@ -90,17 +90,17 @@
     name: {
       required: true,
       message: '请输入收款人姓名',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     account: {
       required: true,
       message: '请输入收款账户',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     money: {
       required: true,
       message: '请输入转账金额',
-      trigger: 'blur',
+      trigger: 'blur-sm',
     },
     myAccount: {
       required: true,

@@ -22,6 +22,14 @@ export function login(params) {
   });
 }
 
+export function refreshToken() {
+  return Alova.Get<InResult>('/user/refresh', {
+    meta: {
+      isReturnNativeResponse: true,
+    },
+  });
+}
+
 /**
  * @description: 用户修改密码
  */

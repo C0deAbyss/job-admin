@@ -74,18 +74,18 @@
   const rules: FormRules = {
     name: {
       required: true,
-      trigger: ['blur', 'input'],
+      trigger: ['blur-sm', 'input'],
       message: '请输入名称',
     },
     address: {
       required: true,
-      trigger: ['blur', 'input'],
+      trigger: ['blur-sm', 'input'],
       message: '请输入地址',
     },
     date: {
       type: 'number',
       required: true,
-      trigger: ['blur', 'change'],
+      trigger: ['blur-sm', 'change'],
       message: '请选择日期',
     },
   };
@@ -102,7 +102,7 @@
           console.log(e);
         },
       },
-      rules: [{ required: true, message: '请输入姓名', trigger: ['blur'] }],
+      rules: [{ required: true, message: '请输入姓名', trigger: ['blur-sm'] }],
     },
     {
       field: 'mobile',
