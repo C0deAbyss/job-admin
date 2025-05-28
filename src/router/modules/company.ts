@@ -38,14 +38,24 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/dashboard/edit/edit.vue'),
       },
       {
-        path: 'company',
-        name: `${routeName}_employee_manage`,
+        path: 'employee',
+        name: `company_employee_manage`,
         meta: {
           title: '员工管理',
           permissions: ['employee_manage'],
           affix: true,
         },
         component: () => import('@/views/employee/manageList/index.vue'),
+      },
+      {
+        path: 'employee_edit/:id?',
+        name: 'company_employee_edit',
+        meta: {
+          title: '员工编辑',
+          permissions: ['employee_manage'],
+          hidden: true,
+        },
+        component: () => import('@/views/employee/edit/edit.vue'),
       },
       {
         path: 'manage',
