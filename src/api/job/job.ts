@@ -22,6 +22,14 @@ export function getJobInfo(id: number) {
   return Alova.Get<InResult<Job>>(`/job/info?id=${id}`);
 }
 
+export function deleteJob(id: number) {
+  return Alova.Get<InResult>(`/job/delete?id=${id}`, {
+    meta: {
+      isReturnNativeResponse: true,
+    },
+  });
+}
+
 export function saveJob(data: Job) {
   return Alova.Post<InResult>(
     '/job/save',

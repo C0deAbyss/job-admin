@@ -49,7 +49,7 @@
   import { BasicForm, FormSchema, useForm } from '@/components/Form/index';
   import { columns, ListData } from './columns';
   import { PlusOutlined } from '@vicons/antd';
-  import { useRouter } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import { useMessage } from 'naive-ui';
   import { deleteEmployee, getEmployeeList } from '@/api/employee/manage';
   import { useUserStore } from '@/store/modules/user';
@@ -142,6 +142,7 @@
     deleteId.value = record.id;
   }
 
+  const route = useRoute();
   async function confirmDelete() {
     console.log(deleteId.value);
     const resp = await deleteEmployee(deleteId.value);
@@ -151,6 +152,7 @@
       message.error(resp.msg);
     }
     showModal.value = false;
+    window.location.href = route.fullPath;
   }
 
   function handleSubmit(values: Recordable) {

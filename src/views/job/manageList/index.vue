@@ -28,33 +28,15 @@
         </n-button>
       </template>
 
-      <template #toolbar> </template>
+      <template #toolbar></template>
     </BasicTable>
 
-    <n-modal v-model:show="showModal" :show-icon="false" preset="dialog" title="新建">
-      <n-form
-        :model="formParams"
-        :rules="rules"
-        ref="formRef"
-        label-placement="left"
-        :label-width="80"
-        class="py-4"
-      >
-        <n-form-item label="名称" path="name">
-          <n-input placeholder="请输入名称" v-model:value="formParams.name" />
-        </n-form-item>
-        <n-form-item label="地址" path="address">
-          <n-input type="textarea" placeholder="请输入地址" v-model:value="formParams.address" />
-        </n-form-item>
-        <n-form-item label="日期" path="date">
-          <n-date-picker type="datetime" placeholder="请选择日期" v-model:value="formParams.date" />
-        </n-form-item>
-      </n-form>
-
+    <n-modal v-model:show="showModal" :show-icon="false" preset="dialog" title="提示">
+      <n-text>删除之后无法恢复，确认删除？</n-text>
       <template #action>
         <n-space>
           <n-button @click="() => (showModal = false)">取消</n-button>
-          <n-button type="info" :loading="formBtnLoading" @click="confirmForm">确定</n-button>
+          <n-button type="error" @click="confirmDelete">确定</n-button>
         </n-space>
       </template>
     </n-modal>
@@ -67,9 +49,9 @@
   import { BasicForm, FormSchema, useForm } from '@/components/Form/index';
   import { columns, ListData } from './columns';
   import { PlusOutlined } from '@vicons/antd';
-  import { useRouter } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import { type FormRules, useMessage } from 'naive-ui';
-  import { getJobList } from '@/api/job/job';
+  import { deleteJob, getJobList } from '@/api/job/job';
   import { useUserStore } from '@/store/modules/user';
 
   const rules: FormRules = {
@@ -104,114 +86,6 @@
       },
       rules: [{ required: true, message: '请输入职位名', trigger: ['blur-sm'] }],
     },
-    // {
-    //   field: 'mobile',
-    //   component: 'NInputNumber',
-    //   label: '手机',
-    //   componentProps: {
-    //     placeholder: '请输入手机号码',
-    //     showButton: false,
-    //     onInput: (e: any) => {
-    //       console.log(e);
-    //     },
-    //   },
-    // },
-    // {
-    //   field: 'type',
-    //   component: 'NSelect',
-    //   label: '类型',
-    //   componentProps: {
-    //     placeholder: '请选择类型',
-    //     options: [
-    //       {
-    //         label: '舒适性',
-    //         value: 1,
-    //       },
-    //       {
-    //         label: '经济性',
-    //         value: 2,
-    //       },
-    //     ],
-    //     onUpdateValue: (e: any) => {
-    //       console.log(e);
-    //     },
-    //   },
-    // },
-    // {
-    //   field: 'makeDate',
-    //   component: 'NDatePicker',
-    //   label: '预约时间',
-    //   defaultValue: 1183135260000,
-    //   componentProps: {
-    //     type: 'date',
-    //     clearable: true,
-    //     onUpdateValue: (e: any) => {
-    //       console.log(e);
-    //     },
-    //   },
-    // },
-    // {
-    //   field: 'makeTime',
-    //   component: 'NTimePicker',
-    //   label: '停留时间',
-    //   componentProps: {
-    //     clearable: true,
-    //     onUpdateValue: (e: any) => {
-    //       console.log(e);
-    //     },
-    //   },
-    // },
-    // {
-    //   field: 'status',
-    //   label: '状态',
-    //   //插槽
-    //   slot: 'statusSlot',
-    // },
-    // {
-    //   field: 'makeProject',
-    //   component: 'NCheckbox',
-    //   label: '预约项目',
-    //   componentProps: {
-    //     placeholder: '请选择预约项目',
-    //     options: [
-    //       {
-    //         label: '种牙',
-    //         value: 1,
-    //       },
-    //       {
-    //         label: '补牙',
-    //         value: 2,
-    //       },
-    //       {
-    //         label: '根管',
-    //         value: 3,
-    //       },
-    //     ],
-    //     onUpdateChecked: (e: any) => {
-    //       console.log(e);
-    //     },
-    //   },
-    // },
-    // {
-    //   field: 'makeSource',
-    //   component: 'NRadioGroup',
-    //   label: '来源',
-    //   componentProps: {
-    //     options: [
-    //       {
-    //         label: '网上',
-    //         value: 1,
-    //       },
-    //       {
-    //         label: '门店',
-    //         value: 2,
-    //       },
-    //     ],
-    //     onUpdateChecked: (e: any) => {
-    //       console.log(e);
-    //     },
-    //   },
-    // },
   ];
 
   const router = useRouter();
@@ -220,11 +94,6 @@
 
   const showModal = ref(false);
   const formBtnLoading = ref(false);
-  const formParams = reactive({
-    name: '',
-    address: '',
-    date: null,
-  });
 
   const actionColumn = reactive({
     width: 220,
@@ -254,23 +123,6 @@
             auth: ['job_manage'],
           },
         ],
-        // dropDownActions: [
-        //   {
-        //     label: '启用',
-        //     key: 'enabled',
-        //     // 根据业务控制是否显示: 非enable状态的不显示启用按钮
-        //     ifShow: () => {
-        //       return true;
-        //     },
-        //   },
-        //   {
-        //     label: '禁用',
-        //     key: 'disabled',
-        //     ifShow: () => {
-        //       return true;
-        //     },
-        //   },
-        // ],
         select: (key) => {
           window['$message'].info(`您点击了，${key} 按钮`);
         },
@@ -302,31 +154,28 @@
     actionRef.value.reload();
   }
 
-  function confirmForm(e) {
-    e.preventDefault();
-    formBtnLoading.value = true;
-    formRef.value.validate((errors) => {
-      if (!errors) {
-        window['$message'].success('新建成功');
-        setTimeout(() => {
-          showModal.value = false;
-          reloadTable();
-        });
-      } else {
-        window['$message'].error('请填写完整信息');
-      }
-      formBtnLoading.value = false;
-    });
-  }
-
   function handleEdit(record: Recordable) {
     console.log('点击了编辑', record);
     router.push({ name: 'job_form', params: { id: record.id } });
   }
 
+  const deleteId = ref(0);
+
   function handleDelete(record: Recordable) {
-    console.log('点击了删除', record);
-    window['$message'].info('点击了删除');
+    showModal.value = true;
+    deleteId.value = record.id;
+  }
+
+  const route = useRoute();
+  async function confirmDelete() {
+    const { code } = await deleteJob(deleteId.value);
+    if (code == 200) {
+      message.success('删除成功');
+    } else {
+      message.error('删除失败');
+    }
+    showModal.value = false;
+    window.location.href = route.fullPath;
   }
 
   function handleSubmit(values: Recordable) {
