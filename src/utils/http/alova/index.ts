@@ -15,7 +15,7 @@ export const Alova = createAlova({
   baseURL: apiUrl,
   statesHook: VueHook,
   // 关闭全局请求缓存
-  // cacheFor: null,
+  cacheFor: null,
   // 全局缓存配置
   // cacheFor: {
   //   POST: {
